@@ -65,7 +65,7 @@ A general LLM can replicate anything a customer can paste. It cannot replicate *
 
 ### And the failure that no price justifies
 
-**Jade's numbers are real. Its patient isn't.** Asked about a date with no data, Jade correctly refuses — it does not fabricate figures. But unprompted, it decided this user "is on a shift work schedule," retrieved genuine peer-reviewed literature on shift-work sleep disruption, and delivered health guidance built on an occupational identity it invented. Meanwhile it cannot see roughly a year of the sleep data the ring recorded, and reports "no data" for 352,441 HRV readings it holds.
+**Jade's numbers are real. Its patient isn't.** Asked about a date with no data, Jade correctly refuses — it does not fabricate figures. But unprompted, it decided this user "is on a shift work schedule," retrieved genuine peer-reviewed literature on shift-work sleep disruption, and delivered health guidance built on an occupational identity it invented. Meanwhile it cannot see roughly a year of the sleep data the ring recorded, and reports "no data" for 336,840 non-zero HRV readings it holds.
 
 **The industry checks whether a health AI's numbers are real. Nobody checks whether the person it is reasoning about is real.**
 
@@ -82,7 +82,7 @@ Verified against 18 months of the same user's export:
 
 | Jade said | The record holds |
 |---|---|
-| "No HRV data for June 2026 or March 2026" | 9,917 HRV readings across those two months (March mean 142.9, June 126.8) |
+| "No HRV data for June 2026 or March 2026" | 9,537 non-zero HRV readings across those two months (March 6,473 / mean 147.0; June 3,046 / mean 135.3) |
 | "No movement entries for May 2026; most recent is April, next is June" | May 13–19: 7 days, 2,721 motion + 2,721 step readings — **more than the April it cites** |
 
 A user hears "no data" and concludes their ring failed. The ring worked perfectly. **The pipeline lost it.**
@@ -146,7 +146,7 @@ Same shape three times: a plausible story, never tested against the raw record, 
 2. Cost-vs-price is a live question, not a moot one.
 3. Every failure above occurs inside **a product users are asked to pay to use more of** — which raises the stakes on the false negatives and the fabricated premise considerably.
 
-Marketed as "the world's first real-time biointelligence AI," Jade cannot see roughly a year of the sleep data its own ring captured, says "no data" to 352k HRV readings, and — by its own admission — has **"access to summarized daily, weekly and monthly data"** only.
+Marketed as "the world's first real-time biointelligence AI," Jade cannot see roughly a year of the sleep data its own ring captured, says "no data" to 337k non-zero HRV readings, and — by its own admission — has **"access to summarized daily, weekly and monthly data"** only.
 
 **None of these are model-quality failures.** One is an ingestion gap, one is a wear-compliance gap, one is an unguarded inference step. Better models fix none of them, which is the good commercial news: **the AI isn't the gimmick; the data supply and the guardrails are the product.** Scaling model spend against a 26%-coverage sensor record buys nothing a user would notice.
 
@@ -154,7 +154,7 @@ Marketed as "the world's first real-time biointelligence AI," Jade cannot see ro
 
 0. **Gate inferred user attributes.** Jade may state what it *measured*; it must not promote a measurement into an identity ("shift worker") and then retrieve literature for it. Either ask ("does your schedule involve shift work?") or label the inference as one. This is the cheapest fix on the list and it closes the failure with the highest liability — clinical-sounding advice aimed at the wrong person.
 1. **Close the false-negative class.** Any "no data" response should distinguish *never recorded* from *not in my index* — a one-line provenance change that removes the most damaging data failure a health product can have: telling users their own body data doesn't exist. Start with the ~12-month sleep blind spot (Jade reports earliest sleep data Jan 2026; the ring recorded from Jan 2025).
-2. **Give the model query access to the raw store**, or expand document coverage to the streams already captured. HRV is the glaring omission: 352k readings, invisible.
+2. **Give the model query access to the raw store**, or expand document coverage to the streams already captured. HRV is the glaring omission: 337k non-zero readings, invisible.
 3. **Move spend from model to compliance.** Personalisation is gated on wear-nights, not parameters. On this record the ring was worn ~26% of nights; below some coverage floor, confident advice is unsupportable by construction. **Establish that floor, measure each user against it, and gate the confidence of advice on it** — a user under the floor should be told their data is too thin, not handed a recommendation.
 4. **Instrument both boundaries.** Track (a) the share of "no data" answers that are false negatives, and (b) per-user wear coverage against the floor. Neither is measured today; on this sample both are bad.
 
@@ -162,7 +162,7 @@ Marketed as "the world's first real-time biointelligence AI," Jade cannot see ro
 
 - **N=1**, one user, 18 months, ~2.4M readings; one probe run (P1, Deep Research mode).
 - The user's export is **stale after 2026-07-23**; Jade holds newer data. No confabulation claim is made about post-Jul-23 figures — the earlier suspicion was withdrawn once the export cutoff was identified.
-- Derived sleep covers 116 of 562 nights (21%); only 50 consecutive-night pairs exist, so recovery-driver modelling stays a simple regression with confidence intervals.
+- Derived sleep covers 144 of 562 nights (26%); 79 consecutive-night pairs exist, so recovery-driver modelling stays a simple regression with confidence intervals. (Corrected 2026-08-09: earlier drafts cited 116/21%/50 from a superseded build of the transform.)
 - Two bugs found and fixed in the author's own pipeline (motion normalised per reading after summing conflated sampling density with movement; circular-time percentiles sorted lexically across midnight) — documented because a study auditing someone else's data handling must show its own.
 
 ## Open items before publication

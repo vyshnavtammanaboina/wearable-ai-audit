@@ -38,8 +38,8 @@ Before grading Jade, I had to know the truth. That meant building the pipeline: 
 |---|---|
 | Raw readings | 2,422,726 |
 | Calendar span | 562 days (Jan 2025 – Jul 2026) |
-| Nights sleep could be derived | **116 (21%)** |
-| Consecutive night-pairs available for modelling | 50 |
+| Nights sleep could be derived | **144 (26%)** |
+| Consecutive night-pairs available for modelling | 79 |
 | Uncensored nights in the final models | 95 |
 
 I wore the ring about a quarter of the trackable nights. Everything downstream is constrained by that.
@@ -59,7 +59,7 @@ Then I tested the claims these products are built on — does more sleep improve
 
 R² between 0.0005 and 0.05. **On 18 months of my own data, I cannot demonstrate that sleep duration predicts my recovery.**
 
-This is not a claim that sleep does not matter. It is a measurement of what 21% wear coverage can support — which is very little. **And it sets the bar Jade has to clear:** any confident, personalised claim about my recovery drivers is a claim my full raw dataset cannot justify.
+This is not a claim that sleep does not matter. It is a measurement of what 26% wear coverage can support — which is very little. **And it sets the bar Jade has to clear:** any confident, personalised claim about my recovery drivers is a claim my full raw dataset cannot justify.
 
 ### Where the data *does* have power — and what it kills
 
@@ -132,7 +132,7 @@ A wrong number is catchable by any user with an export. **A wrong premise dresse
 
 Asked to compare my HRV across two months, Jade replied: *"HRV values are not available for either June 2026 or March 2026."*
 
-My export holds **9,917 non-zero HRV readings across those two months** — 352,441 across the full record.
+My export holds **9,537 non-zero HRV readings across those two months** — 336,840 across the full record.
 
 Asked how many days I wore the ring in May 2026: *"no entries for May 2026… the most recent movement data is April 2026, and the next begins June 2026."* My export holds **seven days in mid-May, 2,721 motion readings** — more movement data than the April it cites as most recent.
 
@@ -164,7 +164,7 @@ I have left my own error in the published version deliberately. An evaluation th
 
 The entire defensible increment is convenience.
 
-**And the price fights the product.** Jade's quality is gated on data density — my own 21% coverage is why nothing in Part 1 reached significance. Metering the assistant suppresses engagement; engagement drives wear; wear is the only thing that makes personalised health AI work. The paywall throttles its own input. I watched this happen mid-audit: *"Daily credits used · Credits renew in 2 hours."* The free tier stops exactly when a user is engaged enough to keep asking.
+**And the price fights the product.** Jade's quality is gated on data density — my own 26% coverage is why nothing in Part 1 reached significance. Metering the assistant suppresses engagement; engagement drives wear; wear is the only thing that makes personalised health AI work. The paywall throttles its own input. I watched this happen mid-audit: *"Daily credits used · Credits renew in 2 hours."* The free tier stops exactly when a user is engaged enough to keep asking.
 
 ### A competitor discloses what Ultrahuman does not
 
@@ -188,9 +188,10 @@ This also constrains the "should they train their own model on user data" questi
 ## Limits
 
 - **N=1.** One user, one device, 18 months. This measures the *methodology and marginal value* of the AI layer on one deeply instrumented user, not population-level performance.
-- **21% night coverage** — the binding constraint on every result in Part 1, and the reason those results are reported as failures to demonstrate rather than as absence of effect.
+- **26% night coverage** — the binding constraint on every result in Part 1, and the reason those results are reported as failures to demonstrate rather than as absence of effect.
 - **My export ran stale after July 23, 2026.** Jade held newer data than I did. I initially suspected it of fabricating recent figures; that suspicion was wrong and is withdrawn.
 - **HRV units are not comparable.** Jade reports HRV in milliseconds; the export's HRV field is on a different scale. All HRV findings here rest on *counts* and *direction*, never on absolute values.
+- **A third correction, made pre-publication (2026-08-09) — and it is a propagation failure, not a discovery failure.** Earlier drafts stated 116 derived nights (21%), 50 consecutive night-pairs, "9,917 non-zero HRV readings," and 352,441 across the record. Two separate faults: the night counts were stale figures from a superseded build of the transform (current values: 144 nights, 26%, 79 pairs), and the HRV counts were computed *including* 15,601 sensor-dropout zeros while being labelled non-zero (correct non-zero figures: 9,537 and 336,840). The zero-filter fault had **already been found and documented in `probes/P5-P9-P10.md` on 2026-08-07** — it simply never propagated from the working notes into this document. No conclusion changes; Jade still reported "not available" for roughly 9,500 readings it holds. It is recorded here for two reasons: a report whose central charge is *a confident number whose definition does not match its label* does not get to make that error silently, and "the correction existed but never reached the published surface" is the same failure mode this study documents in Part 3 — a claim propagating with the authority of whatever artifact carried it, unchecked against the record.
 - **Two bugs found in my own pipeline and fixed:** motion summed per time-bin measured sampling density rather than movement (readings per bin range 6–2037); and time-of-day percentiles sorted clock strings lexically across midnight, which nearly hid a working sleep detector behind a meaningless summary.
 - **Prices verified from public sources**; the exact paid-tier price for Jade at the time of writing should be confirmed against the current in-app purchase screen.
 

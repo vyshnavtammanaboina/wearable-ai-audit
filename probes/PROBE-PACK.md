@@ -33,9 +33,11 @@ Every probe below is labelled with which architectures it separates.
 | Days with any data, May 2026 | **7 days** (1 derivable night) |
 | Days with any data, Dec 2025 | **0 — the month does not exist in the record** |
 | Sleep direction, March 2026 vs July 2026 | **July was LONGER** (median 7.13 h vs 5.19 h) |
-| Total derivable nights, 18 months | 116 of 562 days (21%) |
+| Total derivable nights, 18 months | **144 of 562 days (26%)** — re-measured 2026-08-09; the 116/21% originally keyed here predates the transform fixes |
 
 ### Definition-sensitive monthly aggregates (secondary scoring)
+
+> ⚠️ **HRV means in this table include sensor-dropout zeros** (15,601 across the record) and are therefore biased low. Superseded by the zero-filtered keys in `P5-P9-P10.md` — e.g. June 2026 is **3,046 non-zero readings, mean 135.3**, not the 126.8 keyed below. Use the filtered figures when challenging Jade; a stale number hands it a fair rebuttal.
 
 | Month | Days w/ data | HR mean (all readings) | HRV mean | Nights derived | Median sleep |
 |---|---|---|---|---|---|

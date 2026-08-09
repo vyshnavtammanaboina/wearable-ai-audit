@@ -87,7 +87,7 @@ Against that, a $3.99 subscription is rounding-error revenue. But retention is n
 | +1pt reduction in returns/churn on $62M hardware | **~$620k/yr, recurring in cohort value** |
 | Wear-compliance improvement | **Compounding** — see below |
 
-**The compounding term is the real prize.** This audit measured 21% night coverage on a two-year user, and at that density *nothing* personal reached statistical significance — not sleep→recovery, not wake-consistency, not workout load. **Wear compliance is the binding constraint on whether personalised health AI works at all.** An assistant that increases wear makes every downstream feature better, including the paid clinical products. Metering that assistant does the opposite.
+**The compounding term is the real prize.** This audit measured 26% night coverage on a two-year user, and at that density *nothing* personal reached statistical significance — not sleep→recovery, not wake-consistency, not workout load. **Wear compliance is the binding constraint on whether personalised health AI works at all.** An assistant that increases wear makes every downstream feature better, including the paid clinical products. Metering that assistant does the opposite.
 
 **So the current pricing trades a compounding retention asset for ~$1M of thin-margin subscription revenue.** That is the strategic error, and it is quantifiable.
 
@@ -100,7 +100,7 @@ All PowerPlugs are free for 12 months with a Ring PRO, and post-year-one pricing
 1. **Stop selling Jade. Bundle it, unmetered, with the hardware.** It is COGS on a $350 device, not a product line. Forgone revenue ~$1M/yr (est.); the retention and wear-compliance upside plausibly exceeds it, and the downside risk of negative-margin power users disappears.
 2. **Move inference to Scenario C for the routine 80%.** Most traffic is bounded retrieval-and-summarise over the user's own summaries — a narrow, repeatable task, exactly where a fine-tuned small model runs 20–100× cheaper. Reserve the expensive multi-agent path for genuine Deep Research. This is the single highest-ROI engineering change available, and it converts the metering decision from necessity to choice.
 3. **Charge for what a general LLM cannot substitute** — CGM, Blood Vision, real-time AFib intervention. The ladder exists; Jade is on the wrong rung. Chat over summaries is fully substitutable by an assistant the customer already pays ~$20/month for.
-4. **Fix the false negatives before adding capability.** Jade denies HRV data the ring recorded 352,441 times and cannot see ~12 months of sleep. That is an ingestion defect suppressing the perceived value of the whole ecosystem — and it is cheaper to fix than any model upgrade.
+4. **Fix the false negatives before adding capability.** Jade denies HRV data the ring recorded 336,840 times (non-zero) and cannot see ~12 months of sleep. That is an ingestion defect suppressing the perceived value of the whole ecosystem — and it is cheaper to fix than any model upgrade.
 
 ## 9. What would change this verdict
 

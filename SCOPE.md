@@ -32,7 +32,7 @@ One user, fully instrumented, ground truth in hand. Jade's answers get scored ag
 | # | Model | Method | Validated how |
 |---|---|---|---|
 | M1 | **Sleep/wake detection** (export has no sleep events) | Rule-based/HMM on overnight motion + HR troughs | Sanity: no overlap with logged workouts; visual spot-check against known schedule |
-| M2 | **Recovery drivers** — what actually moves next-day RHR/HRV | ⚠️ **n=50 consecutive night pairs only** (measured 2026-08-04). Simple regression, 2–3 features max, effect sizes with CIs. Tree ensemble is OFF — it would overfit 50 rows and the importances would be noise | Time-series CV; report CIs and state the n everywhere |
+| M2 | **Recovery drivers** — what actually moves next-day RHR/HRV | ⚠️ **n=79 consecutive night pairs** (re-measured 2026-08-09; the 50 quoted on Aug 4 predates the transform fixes). Simple regression, 2–3 features max, effect sizes with CIs. Tree ensemble is OFF — it would overfit and the importances would be noise | Time-series CV; report CIs and state the n everywhere |
 | M3 | **Energy curve** — when are peaks/dips, do they move | Two-process circadian model (sleep midpoint + temp rhythm) → predicted dip windows | Predicted dips vs. observed midday activity lulls in steps/motion |
 
 M2 is the centerpiece: it answers "which advice claims are true *for me*" (consistency, late workouts, load) with effect sizes.
@@ -79,7 +79,7 @@ The headline "2M+ readings / 18 months" does not survive contact with the analys
 
 | Finding | Number | Consequence |
 |---|---|---|
-| Usable derived nights | **116 of 562 days (21%)** | Ring worn ~half the nights; sleep derivable on ~40% of those |
+| Usable derived nights | **144 of 562 days (26%)** | Ring worn ~half the nights; sleep derivable on ~half of those. *(Superseded 2026-08-09: the 116/21% measured on Aug 4 predates the transform fixes below.)* |
 | Consecutive night pairs | **50** | Hard ceiling on M2. Simple model + CIs only |
 | Nights with no overnight data at all | 267 | Not a detector failure — the ring was off |
 | Coverage collapse in 2026 | Feb 2, Apr 2, May 1 | Nov–Dec 2025 missing entirely; recent months thinnest |
