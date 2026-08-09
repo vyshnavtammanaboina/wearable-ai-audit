@@ -8,10 +8,20 @@ you can never prove what the source actually said.
 
 import sqlite3
 import csv
+import os
 from pathlib import Path
 
-SRC = Path(r"C:\Users\vaish\Desktop\vaishnav's documents\New folder\Kite-vault\War-room\Ring data\data_export")
-DB = Path(__file__).parent / "ring.db"
+# Point RING_EXPORT_DIR at your own Ultrahuman export folder (the one holding
+# ring_data_*.csv). Defaults to ./data_export next to this script.
+SRC = Path(os.environ.get("RING_EXPORT_DIR", Path(__file__).parent / "data_export"))
+DB = Path(os.environ.get("RING_DB", Path(__file__).parent / "ring.db"))
+
+if not SRC.is_dir():
+    raise SystemExit(
+        f"Export directory not found: {SRC}\n"
+        "Set RING_EXPORT_DIR to your Ultrahuman CSV export folder, e.g.\n"
+        '  RING_EXPORT_DIR="/path/to/data_export" python 01_ingest.py'
+    )
 
 con = sqlite3.connect(DB)
 cur = con.cursor()
