@@ -1,0 +1,6 @@
+# Stages 1-4 (ingest, transform, marts, tests) run on the standard library alone.
+# These are needed for stage 5 (models) and stage 6 (charts).
+numpy>=1.26
+pandas>=2.1
+statsmodels>=0.14
+matplotlib>=3.8

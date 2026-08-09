@@ -1,0 +1,18 @@
+# Raw personal health data — never published. See DATA.md.
+ring.db
+ring.sqbpro
+data_export/
+personal_data.csv
+*.csv
+outputs/*.csv
+
+# Vault-internal notes: private learning assessments and drill logs.
+# These describe the author, not the analysis. Not for publication.
+LEARNING-PROFILE.md
+SYLLABUS.md
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
