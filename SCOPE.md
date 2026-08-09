@@ -1,5 +1,5 @@
 # SCOPE.md — Ring Pipeline: Data vs. Jade
-*Rescoped 2026-08-04 (evening). Previous broader scope (SLM build-vs-buy, value-vs-usage quadrant, competitive teardown) cut by Kite's call — parked in git history, one implications page survives. Focus: model the data, compare to Jade.*
+*Rescoped 2026-08-04 (evening). A previous, broader scope (small-model build-vs-buy, value-vs-usage quadrant, full competitive teardown) was cut deliberately — parked in git history, with one implications page surviving. Focus: model the data, compare to Jade.*
 
 ---
 
@@ -12,14 +12,14 @@ One user, fully instrumented, ground truth in hand. Jade's answers get scored ag
 ## Constraints
 
 - Ring off-body since ~Jul 23 (complaint pending) → all probes target **historical** data; ring.db is ground truth
-- Report + repo ship by **Aug 9–10**; resume Aug 11 (see `War-room/McKinsey-BA-2027.md`)
-- Report opens with the question, not the stack — BA rubric A1 governs the write-up
+- Report + repo ship by **Aug 9–10** — a fixed external deadline, which is why the scope above was cut rather than extended
+- Report opens with the business question, not the stack
 
 ---
 
 ## Workstreams
 
-### 1. Pipeline (repo = unfreeze artifact #2, merged by Aug 6)
+### 1. Pipeline (public repo, merged by Aug 6)
 
 `01_ingest.py` done (raw_readings 2M+ rows, events). Remaining:
 - `02_transform.py` — sleep/wake derivation, daily rollups (below)
@@ -52,7 +52,7 @@ Ask Jade the exact questions M1–M3 answer. Score each response: **grounded-cor
 
 Transcripts + screenshots → `probes/`, scored same day, scoring rubric in the report appendix.
 
-### 4. Report (= unfreeze artifact #3, published by Aug 9–10)
+### 4. Report (published by Aug 9–10)
 
 - Answer-first: one-line verdict up top
 - Side-by-side per question: *data says X (effect size) — Jade says Y (score)*
@@ -70,8 +70,7 @@ Transcripts + screenshots → `probes/`, scored same day, scoring rubric in the 
 | Aug 5–6 | 02_transform + 03_marts + 04_tests; repo public, PR merged |
 | Aug 6–8 | M1 → M2 → M3; charts |
 | Aug 8 | Probe battery complete (C/D/E), scored |
-| Aug 9–10 | Report written + deck; publish; resume rebuild + `/score-resume` |
-| Aug 11 | Submit McKinsey application |
+| Aug 9–10 | Report written + exec deck; published |
 
 ## Data-quality findings (2026-08-04, from the built transform — these belong IN the report)
 
