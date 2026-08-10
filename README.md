@@ -20,7 +20,7 @@ To answer it I exported 18 months of raw sensor data - **2,422,726 readings** - 
 2. **Jade fabricated *me*.** Unprompted, it concluded I work a shift-work schedule, retrieved genuine peer-reviewed literature about shift workers, and gave me health guidance based on it. I am a graduate student. The numbers were right, the citations were real, the patient was fictional.
 3. **Its informational edge over my own screenshots is roughly zero, sometimes negative.** It cannot see about a year of the sleep data my ring recorded, and reports HRV "not available" for months in which the ring logged thousands of HRV readings.
 
-**Business conclusion:** Ultrahuman is charging for the commodity layer and giving away the moat. Chat over summaries is fully substitutable by an assistant the customer already owns. The un-substitutable assets - continuous glucose, blood biomarkers, real-time intervention - are exactly what a general LLM can never touch.
+**Business conclusion:** as currently built, Ultrahuman is charging for the commodity layer - chat over summaries is fully substitutable by an assistant the customer already owns. But the fault is the compute architecture, not the price. Jade re-synthesises the same weekly picture on every question, so cost scales with the engagement the product depends on, which is why the free tier must be metered. **Precompute one weekly digest per user, store it as their data, answer follow-ups by retrieval over it:** cost becomes fixed per user, the paid tier moves from negative margin to healthy, and the compiled artifact becomes the one thing a customer cannot paste into the assistant they already own. See [ECONOMICS.md](ECONOMICS.md) §8.
 
 ---
 

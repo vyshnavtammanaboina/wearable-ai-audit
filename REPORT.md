@@ -18,7 +18,9 @@ I exported 18 months of my own raw sensor data - 2,422,726 readings - built a te
 2. **Jade fabricated *me*.** Unprompted, it concluded I work a shift-work schedule, retrieved genuine peer-reviewed literature about shift workers, and gave me health guidance based on it. I am a graduate student. The numbers were right, the citations were real, the patient was fictional.
 3. **Its informational edge over my screenshots is roughly zero, and sometimes negative.** By its own admission Jade has *"access to summarized daily, weekly and monthly data"* - the same layer I can screenshot. It cannot see about a year of the sleep data my ring recorded, and it told me HRV data "isn't available" for months in which my ring logged tens of thousands of HRV readings.
 
-**The business conclusion:** Ultrahuman is charging for the commodity layer and giving away the moat. Chat over summaries is fully substitutable by an assistant the customer already owns. Their genuinely un-substitutable assets - continuous glucose, blood biomarkers, real-time intervention - are the things a general LLM can never touch. The AI belongs in the hardware bundle as retention infrastructure, not on the subscription ladder where it loses a comparison it should never have entered.
+**The business conclusion:** as currently built, Ultrahuman is charging for the commodity layer. Chat over summaries is fully substitutable by an assistant the customer already owns, which is a comparison Jade cannot win.
+
+But the fault is the compute architecture, not the price. Jade re-synthesises the same weekly picture on every question, so cost scales with the engagement the product depends on, which is why the free tier has to be metered at all. **Precompute one weekly digest per user, store it as their data, and answer follow-ups by retrieval over it:** cost becomes fixed per user, the paid tier moves from negative margin to healthy, metering becomes unnecessary, and the compiled artifact becomes the one thing a customer *cannot* paste into the assistant they already own. The substitutability problem dissolves rather than being conceded. Full working: [ECONOMICS.md](ECONOMICS.md) §8.
 
 ---
 
@@ -178,10 +180,11 @@ This also constrains the "should they train their own model on user data" questi
 
 ### What I would do
 
-1. **Bundle the assistant with the hardware, permanently and unmetered.** It is retention infrastructure and a wear-compliance driver, not a product line. Every credit limit costs data the product needs.
-2. **Charge for what cannot be pasted.** Continuous glucose, blood biomarkers, real-time AFib intervention - a general LLM has no entry there. The ladder already exists; the AI is simply on the wrong rung.
-3. **Fix the false negatives before adding capability.** "No data" must distinguish *never recorded* from *not indexed*. Telling customers their own body data does not exist is the most damaging failure available to a health product, and it is an ingestion bug, not a model problem.
-4. **Gate inferred attributes.** State what was measured; do not promote a measurement into an identity and retrieve literature for it. Ask, or label the inference. Cheapest fix here, highest liability closed.
+1. **Precompute a weekly digest per user; stop synthesising on demand.** Answering every question with a fresh multi-agent pass is what makes cost variable, unbounded, and dependent on the engagement the product needs. Batch-generate one compiled document per user per week, store it as their data, and serve follow-ups as retrieval over it. Cost becomes fixed per user, the paid tier clears a healthy margin instead of running negative, and metering becomes unnecessary rather than merely unpopular.
+2. **Set the free tier's cadence deliberately - it is a second lever, not a detail.** Precompute alone does not close the line: at frontier inference costs a *weekly* free digest still leaves the total AI line around -$876k, because paid margin funds roughly 18,000 free users against a base many times that. A *monthly* free digest reaches break-even before any model-cost work. Give the free tier monthly, keep weekly cadence and fast follow-ups behind the paywall, and route routine follow-ups to a cheaper model.
+3. **Keep charging for what cannot be pasted.** Continuous glucose, blood biomarkers, real-time AFib intervention - a general LLM has no entry there. That ladder already exists and remains the right place for premium pricing.
+4. **Fix the false negatives before adding capability.** "No data" must distinguish *never recorded* from *not indexed*. Telling customers their own body data does not exist is the most damaging failure available to a health product, and it is an ingestion bug, not a model problem. Precompute closes most of this by construction: once the digest is deliberately generated, its coverage is a design decision rather than an accident.
+5. **Gate inferred attributes.** State what was measured; do not promote a measurement into an identity and retrieve literature for it. Ask, or label the inference. Cheapest fix here, highest liability closed.
 
 ---
 
