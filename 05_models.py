@@ -1,5 +1,5 @@
 """
-STEP 5 — MODELS
+STEP 5 - MODELS
 M2: what actually moves overnight recovery (resting HR, HRV)?
 
 Deliberately small. n=142 nights supports a handful of coefficients with honest

@@ -1,5 +1,5 @@
 """
-STEP 2 — TRANSFORM
+STEP 2 - TRANSFORM
 raw_readings (EAV, burst-sampled, UTC) -> epochs_10min -> sleep_sessions.
 
 Facts this transform is built on (verified against the data, 2026-08-04):

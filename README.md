@@ -8,7 +8,7 @@ This repository answers the only question that decides a purchase:
 
 > **Does Jade know more about me than the general-purpose assistant I already pay for?**
 
-To answer it I exported 18 months of raw sensor data — **2,422,726 readings** — built a tested pipeline over it, and used that pipeline as ground truth to grade Jade's answers.
+To answer it I exported 18 months of raw sensor data - **2,422,726 readings** - built a tested pipeline over it, and used that pipeline as ground truth to grade Jade's answers.
 
 **[→ Read the full report](REPORT.md)**
 
@@ -20,7 +20,7 @@ To answer it I exported 18 months of raw sensor data — **2,422,726 readings** 
 2. **Jade fabricated *me*.** Unprompted, it concluded I work a shift-work schedule, retrieved genuine peer-reviewed literature about shift workers, and gave me health guidance based on it. I am a graduate student. The numbers were right, the citations were real, the patient was fictional.
 3. **Its informational edge over my own screenshots is roughly zero, sometimes negative.** It cannot see about a year of the sleep data my ring recorded, and reports HRV "not available" for months in which the ring logged thousands of HRV readings.
 
-**Business conclusion:** Ultrahuman is charging for the commodity layer and giving away the moat. Chat over summaries is fully substitutable by an assistant the customer already owns. The un-substitutable assets — continuous glucose, blood biomarkers, real-time intervention — are exactly what a general LLM can never touch.
+**Business conclusion:** Ultrahuman is charging for the commodity layer and giving away the moat. Chat over summaries is fully substitutable by an assistant the customer already owns. The un-substitutable assets - continuous glucose, blood biomarkers, real-time intervention - are exactly what a general LLM can never touch.
 
 ---
 
@@ -39,9 +39,9 @@ Is Jade worth paying for?
                                        What binds it?                   → Wear coverage (26%), not model quality.
 ```
 
-Branch 3 is the one that reframes the study. Before grading Jade's advice, I asked what the same record could justify from *anyone*. Twelve coefficient tests across five models; after Holm–Bonferroni correction, **not one survived**. The binding constraint on personalised health AI is wear compliance, not model quality.
+Branch 3 is the one that reframes the study. Before grading Jade's advice, I asked what the same record could justify from *anyone*. Twelve coefficient tests across five models; after Holm-Bonferroni correction, **not one survived**. The binding constraint on personalised health AI is wear compliance, not model quality.
 
-Where the data *does* have power — 2.4M intraday readings across 162 well-covered days — a clean signal appears: a real circadian rhythm in resting heart rate, amplitude ≈11 bpm. And it **refutes the feature these apps sell**: the afternoon dip is not there.
+Where the data *does* have power - 2.4M intraday readings across 162 well-covered days - a clean signal appears: a real circadian rhythm in resting heart rate, amplitude ≈11 bpm. And it **refutes the feature these apps sell**: the afternoon dip is not there.
 
 ---
 
@@ -52,7 +52,7 @@ Six stages, plain Python and SQLite, no framework.
 | Stage | File | What it does |
 |---|---|---|
 | 1 | `01_ingest.py` | Land every CSV row untouched into `raw_readings` (long/EAV, with provenance). No cleaning during load. |
-| 2 | `02_transform.py` | 10-minute epoch binning; sleep/wake derivation from motion + HR troughs — **the export contains no sleep events at all**. |
+| 2 | `02_transform.py` | 10-minute epoch binning; sleep/wake derivation from motion + HR troughs - **the export contains no sleep events at all**. |
 | 3 | `03_marts.py` | Analysis tables: `daily_summary`, `sleep_sessions`, `model_nights`. |
 | 4 | `04_tests.py` | 17 data-quality assertions. |
 | 5 | `05_models.py` | Recovery-driver regressions, HAC standard errors, Holm correction. |
@@ -80,7 +80,7 @@ python 02_transform.py && python 03_marts.py && python 04_tests.py && python 05_
 
 ## Data
 
-**The raw database is not in this repository, and will not be.** `ring.db` is 160MB of one person's continuous health telemetry — heart rate, HRV, temperature, SpO2, respiratory rate, motion, every ten minutes for eighteen months. Publishing it is irreversible in a way that publishing code is not.
+**The raw database is not in this repository, and will not be.** `ring.db` is 160MB of one person's continuous health telemetry - heart rate, HRV, temperature, SpO2, respiratory rate, motion, every ten minutes for eighteen months. Publishing it is irreversible in a way that publishing code is not.
 
 What that costs you: you cannot re-run these exact numbers. What you can do is read every transformation that produced them, run the pipeline against your own export, and check the arithmetic in `REPORT.md` against the assertions in `04_tests.py`. See [DATA.md](DATA.md).
 
@@ -91,7 +91,7 @@ What that costs you: you cannot re-run these exact numbers. What you can do is r
 | Path | Contents |
 |---|---|
 | `REPORT.md` | **The published write-up.** Question → analysis → charts → recommendation. |
-| `FINDINGS.md` | The case spine — answer-first skeleton the report is built from. |
+| `FINDINGS.md` | The case spine - answer-first skeleton the report is built from. |
 | `SCOPE.md` | What was in and out of scope, and why. Includes the decision log. |
 | `ECONOMICS.md` | Marginal-value analysis of the AI layer as a product line. |
 | `RESEARCH-ultrahuman.md` | Sourced background on the company, pricing, and disclosures. |
@@ -104,17 +104,17 @@ What that costs you: you cannot re-run these exact numbers. What you can do is r
 
 Three errors were found in my own work and are documented rather than quietly fixed:
 
-1. **Motion normalisation** — thresholding `motion_sum` per bin measured *sampling density*, not movement (readings per bin range 6–2037). Corrected to a per-reading mean.
-2. **Circular time** — summary percentiles sorted clock strings lexically across midnight, ranking 03:00 before 20:00. This nearly hid a working sleep detector behind a meaningless summary.
-3. **Stale and mislabelled figures** — pre-publication re-query found night counts carried over from a superseded build, and HRV counts labelled "non-zero" that included 15,601 sensor-dropout zeros. Corrected throughout; no conclusion changed.
+1. **Motion normalisation** - thresholding `motion_sum` per bin measured *sampling density*, not movement (readings per bin range 6-2037). Corrected to a per-reading mean.
+2. **Circular time** - summary percentiles sorted clock strings lexically across midnight, ranking 03:00 before 20:00. This nearly hid a working sleep detector behind a meaningless summary.
+3. **Stale and mislabelled figures** - pre-publication re-query found night counts carried over from a superseded build, and HRV counts labelled "non-zero" that included 15,601 sensor-dropout zeros. Corrected throughout; no conclusion changed.
 
-The third one is the point. Its correction had already been made in the working notes on 2026-08-07 and never propagated to the published documents — which is the same failure this study documents in others: a claim travelling on the authority of whatever artifact carried it, unchecked against the raw record. An audit that catches the pattern only in the system under review has not understood the pattern.
+The third one is the point. Its correction had already been made in the working notes on 2026-08-07 and never propagated to the published documents - which is the same failure this study documents in others: a claim travelling on the authority of whatever artifact carried it, unchecked against the raw record. An audit that catches the pattern only in the system under review has not understood the pattern.
 
 ---
 
 ## Limits
 
-**N=1.** One user, one device, 18 months. This measures the *methodology and marginal value* of the AI layer on one deeply instrumented user — not population performance. Wear coverage is 26% of nights, which is the binding constraint on every result in Part 1 and the reason those are reported as failures to demonstrate rather than as absence of effect. HRV units are not comparable between the export and Jade's display, so all HRV findings rest on counts and direction, never absolute values.
+**N=1.** One user, one device, 18 months. This measures the *methodology and marginal value* of the AI layer on one deeply instrumented user - not population performance. Wear coverage is 26% of nights, which is the binding constraint on every result in Part 1 and the reason those are reported as failures to demonstrate rather than as absence of effect. HRV units are not comparable between the export and Jade's display, so all HRV findings rest on counts and direction, never absolute values.
 
 No medical claims are made or intended.
 

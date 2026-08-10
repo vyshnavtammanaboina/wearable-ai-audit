@@ -1,5 +1,5 @@
 """
-STEP 6 — CHARTS
+STEP 6 - CHARTS
 Three figures for the case study. Palette: validated slots 1-2 of the reference
 categorical palette (all-pairs PASS, worst CVD dE 24.7) plus neutral ink.
 
@@ -63,9 +63,9 @@ ax.set_ylim(0, 100)
 ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
 ax.grid(axis="x", visible=False)
-finish(ax, "The ring recorded on 300 of 562 days — and the gaps run for weeks",
-       f"Daily sensor coverage, Jan 2025 – Jul 2026. {worn} days with any data; "
-       f"longest gap 61 days (Nov 2025 – Jan 2026).")
+finish(ax, "The ring recorded on 300 of 562 days - and the gaps run for weeks",
+       f"Daily sensor coverage, Jan 2025 - Jul 2026. {worn} days with any data; "
+       f"longest gap 61 days (Nov 2025 - Jan 2026).")
 # annotate the two longest gaps directly rather than relying on the reader to spot them
 for a, b, txt in [("2025-11-07", "2026-01-06", "61-day gap"),
                   ("2026-04-03", "2026-05-12", "40-day gap")]:
@@ -97,9 +97,9 @@ ax.plot(rhr.coef, y, "o", ms=9, color=BLUE, mec=SURFACE, mew=2, zorder=3)
 ax.set_yticks(y, rhr.label, fontsize=10)
 ax.set_xlabel("change in resting heart rate (bpm)   ·   95% CI")
 ax.grid(axis="y", visible=False)
-finish(ax, "Only wake timing separates from zero — and it does not survive correction",
-       "Effect on overnight resting HR, n=95–142 nights. Four of five intervals cross zero; "
-       "after Holm–Bonferroni across 12 tests, none survives.")
+finish(ax, "Only wake timing separates from zero - and it does not survive correction",
+       "Effect on overnight resting HR, n=95-142 nights. Four of five intervals cross zero; "
+       "after Holm-Bonferroni across 12 tests, none survives.")
 fig.tight_layout()
 fig.savefig(OUT / "fig2_effects.png", bbox_inches="tight")
 plt.close(fig)
@@ -116,7 +116,7 @@ ax.set_xlabel("prior-day steps (thousands)")
 ax.set_ylabel("overnight HRV (ms)")
 finish(ax, f"The strongest relationship found: +{b:.1f} ms HRV per 1,000 prior-day steps",
        f"Bivariate fit, all n={len(d)} nights. The adjusted model (n=95, controlling for sleep "
-       f"duration) gives +1.4 ms, p=0.009 —\nwhich does NOT survive Holm correction across 12 "
+       f"duration) gives +1.4 ms, p=0.009  - \nwhich does NOT survive Holm correction across 12 "
        f"tests (threshold 0.004). Suggestive, not established.")
 fig.tight_layout()
 fig.savefig(OUT / "fig3_hrv_steps.png", bbox_inches="tight")

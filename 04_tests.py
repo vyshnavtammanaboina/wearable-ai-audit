@@ -1,5 +1,5 @@
 """
-STEP 4 — TESTS
+STEP 4 - TESTS
 Validation gates for the pipeline. Run after 01->02->03.
 
 These are the checks that would actually have caught the two real bugs found

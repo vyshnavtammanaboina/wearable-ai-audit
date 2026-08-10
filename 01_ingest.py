@@ -1,5 +1,5 @@
 """
-STEP 1 — INGEST (Extract + Load raw)
+STEP 1 - INGEST (Extract + Load raw)
 Read every ring CSV into ONE SQLite table, exactly as-is. No cleaning yet.
 
 Rule of ETL: land the raw data first, untouched. If you clean during load,
