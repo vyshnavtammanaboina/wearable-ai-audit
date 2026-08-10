@@ -49,6 +49,8 @@ Flat-rate pricing is decided by the tail, not the average. Simulating a full pop
 
 Two honesty notes, because they matter more than the numbers. Stage 7 is a **simulation under declared priors, not a forecast**: no Jade query logs exist publicly, so a "predictive model" of credit usage would be fit to invented data and presented as prediction - the exact failure this study documents in Jade. Stage 8 *is* fit to real data, and its result is negative: wear is ~87% predictable but a logistic model **does not beat "tomorrow = today."** Gating advice on coverage needs a counter, not machine learning. Both results are reported as found.
 
+The better instrument is built and empty. `09_credit_model.py` implements the full trained model - usage regression, measured conversion elasticity, fitted tail quantiles - and **refuses to run until someone supplies real usage data.** It prints the schema it needs and exits. If that data ever arrives, the simulation's robustness argument gets retired in favour of measurement, with no new code. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ---
 
 ## The pipeline
@@ -65,6 +67,7 @@ Six stages, plain Python and SQLite, no framework.
 | 6 | `06_charts.py` | Figures in `outputs/`. |
 | 7 | `07_usage_sim.py` | Monte Carlo over per-user query volume: is flat-rate "unlimited" viable? **Simulation under stated priors, not a fitted model** - no Jade usage data is public. Tested across three distribution families. |
 | 8 | `08_wear_forecast.py` | Wear-compliance forecasting on the real 562-day record, strict temporal split, against honest baselines. |
+| 9 | `09_credit_model.py` | **Placeholder, armed but unfed.** The trained credit-usage model that would retire stage 7's assumptions. Refuses to run without real data; prints the exact schema it needs. `--selftest` verifies the code path on synthetic input and states plainly that the output means nothing. |
 
 ### Tests
 

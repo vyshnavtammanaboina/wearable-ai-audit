@@ -20,3 +20,6 @@ venv/
 # publish helpers, not part of the artifact
 PR_BODY.md
 publish.sh
+
+# contributor usage data: never committed, see CONTRIBUTING.md
+data/
