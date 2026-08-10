@@ -255,33 +255,49 @@ def chart(results, cap_rows):
     ax.set_ylabel("subscribers")
     ax.legend(fontsize=8)
 
-    # 2. cost per user, both architectures
+    # 2. cost per user, both architectures. Drop the tail rather than clamp it:
+    # clamping piles every extreme user into one bar and invents a spike.
     ax = axes[1]
-    od = [min(x * COST_ON_DEMAND, 80) for x in base["_sub_q"]]
-    pc = [DIGESTS_PER_MONTH * DIGEST_COST + x * COST_FOLLOWUP for x in base["_sub_q"]]
-    pc = [min(x, 80) for x in pc]
-    ax.hist(od, bins=60, color="#C0392B", alpha=0.7, label="on-demand")
-    ax.hist(pc, bins=60, color="#1E8449", alpha=0.8, label="precompute")
+    LIM = 80
+    od_all = [x * COST_ON_DEMAND for x in base["_sub_q"]]
+    pc_all = [DIGESTS_PER_MONTH * DIGEST_COST + x * COST_FOLLOWUP for x in base["_sub_q"]]
+    od = [x for x in od_all if x <= LIM]
+    pc = [x for x in pc_all if x <= LIM]
+    hidden = sum(1 for x in od_all if x > LIM)
+    ax.hist(od, bins=60, range=(0, LIM), color="#C0392B", alpha=0.7, label="on-demand")
+    ax.hist(pc, bins=60, range=(0, LIM), color="#1E8449", alpha=0.8, label="precompute")
     ax.axvline(PRICE, color="#333333", lw=2, ls="--", label=f"price ${PRICE}")
     ax.set_yscale("log")
-    ax.set_title("Monthly COGS per subscriber\n(log count, clipped at $80)", fontsize=10)
+    ax.set_xlim(0, LIM)
+    ax.set_title(f"Monthly COGS per subscriber (log count)\n"
+                 f"{hidden/len(od_all):.1%} of on-demand users cost more than ${LIM}, not shown",
+                 fontsize=10)
     ax.set_xlabel("$ per subscriber per month")
     ax.legend(fontsize=8)
 
-    # 3. cap trade-off
+    # 3. cap trade-off. Margin gets its own axis: on one shared scale a -430%
+    # value flattens the two percentage series into a straight line.
     ax = axes[2]
     caps = [r["cap"] for r in cap_rows]
     ax.plot(caps, [r["users_unaffected"] * 100 for r in cap_rows], "o-",
             color="#1E2761", label="users unaffected %")
     ax.plot(caps, [r["questions_refused"] * 100 for r in cap_rows], "s-",
             color="#C0392B", label="questions refused %")
-    ax.plot(caps, [max(r["margin_od"], -1) * 100 for r in cap_rows], "^-",
-            color="#5A5A6E", label="on-demand margin %")
-    ax.axhline(0, color="#999999", lw=0.8)
-    ax.set_title("The credit-cap trade-off\n(on-demand only)", fontsize=10)
+    ax.set_ylim(0, 100)
     ax.set_xlabel("monthly credit cap (questions)")
-    ax.set_ylabel("%")
-    ax.legend(fontsize=8)
+    ax.set_ylabel("% of subscribers / questions")
+    ax2 = ax.twinx()
+    ax2.plot(caps, [r["margin_od"] * 100 for r in cap_rows], "^--",
+             color="#5A5A6E", label="on-demand margin % (right)")
+    ax2.axhline(0, color="#999999", lw=0.8)
+    ax2.set_ylabel("gross margin %", color="#5A5A6E")
+    ax2.tick_params(axis="y", colors="#5A5A6E")
+    ax2.spines["top"].set_visible(False)
+    h1, l1 = ax.get_legend_handles_labels()
+    h2, l2 = ax2.get_legend_handles_labels()
+    ax.legend(h1 + h2, l1 + l2, fontsize=8, loc="center left")
+    ax.set_title("The credit-cap trade-off (on-demand)\nmargin never reaches zero at any cap",
+                 fontsize=10)
 
     for a in axes:
         a.spines["top"].set_visible(False)
