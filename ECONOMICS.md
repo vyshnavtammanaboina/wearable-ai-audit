@@ -117,9 +117,29 @@ Everything above diagnoses a pricing problem. It is actually a **compute-shape**
 
 The average barely moves. **The margin behaviour is what changes.** Today a 5× heavy user costs 5× more, which is exactly who self-selects into a $3.99 unlimited plan, and why §4 shows the paid tier destroying value. Under precompute the same user costs ~40% more, not 400% more. At $47.88/year revenue against ~$21 of cost, the paid tier moves from **negative margin to roughly 55% gross margin** — and metering becomes unnecessary rather than merely undesirable.
 
+### The file boundary is the cost control, not a limitation
+
+The decisive property is that each user's digest is **a single bounded file**. The model can only answer from what that file contains, which means:
+
+- **Context size is capped by construction.** No retrieval fan-out, no planner selecting among data-source agents, no literature RAG issuing eight queries. There is nothing to search.
+- **Cost per question has a ceiling, not an average.** The current architecture's danger is the tail: an engaged user asking hard questions is the expensive one. Bound the input and the tail disappears.
+- **Latency collapses** from ~30 seconds to roughly one small-model call.
+
+The scope limit is the feature. "You can only answer from this user's file" is simultaneously the privacy boundary, the cost boundary, and the grounding boundary.
+
+### This inverts the obvious fix, and that matters
+
+The natural reading of the false negatives is: *the document boundary is the problem, so give the model query access to the raw store.* That is exactly the unbounded, expensive architecture diagnosed above. It would raise cost per query, reintroduce metering, and reinstate the loop that starves the product of the engagement it needs.
+
+**The boundary was never the fault. The contents were.** Jade already answers from pre-built documents; it says so itself. Its defect is that those documents omit HRV and roughly a year of sleep the company holds. So the recommendation is not to rearchitect the product but to **widen a batch job that already runs** — the cheapest intervention on this list, and the one a client is most likely to actually adopt.
+
+*(This supersedes recommendation 2 in `FINDINGS.md`, "give the model query access to the raw store." That recommendation is withdrawn: it treats a symptom by adopting the cost structure that causes the underlying problem.)*
+
 ### It closes the quality defect with the same change
 
 The false negatives in §Findings are not model failures — Jade answers from pre-built documents with incomplete coverage. If the digest is generated deliberately, its coverage is a **design decision**: include HRV, include the full sleep history, and "no data for June 2026" stops being emittable for data the company holds.
+
+**Be precise about what is and isn't new here.** Answering from a pre-built document is what Jade already does — by its own description it has "access to summarized daily, weekly and monthly data," and that accidental document layer is where the false negatives live. The proposal does not change the architecture class; it changes who owns the document. Today it is an unaudited index with holes. Under precompute it is a deliberately generated artifact with a coverage contract: complete streams, known cadence, auditable. The bounded file is also the cost ceiling — a follow-up can only ever cost what reading one document costs, which is what makes flat-rate pricing safe. **The same property that caps the cost caps the failure: the digest can only say what it holds, so what it holds must be a design decision, not an accident.**
 
 **One guardrail is mandatory.** The digest must record *measurements*, not inferred identities. The shift-worker failure occurred because a sleep pattern was promoted to an occupation; write that inference into a stored document and every future answer inherits it, with the document's authority behind it. State observations, label inferences as inferences, or ask.
 
