@@ -190,10 +190,40 @@ Wear is highly predictable: **~87% accuracy** on a held-out window. But the fitt
 
 One caution worth carrying: the test window is only 29.9% worn against a training period that was mostly worn - wear collapsed through 2026. A model tuned on the earlier regime would have been confidently wrong about the later one, which is the same failure mode as everything else documented here.
 
+## 8d. Precompute alone does not close the line. Two levers are required.
+
+The scenario model (`jade-economics-model.xlsx`) makes an uncomfortable thing explicit, and it is stated here rather than buried in a cell: **at frontier inference costs, fixing the architecture is not sufficient.**
+
+| Inference scenario | Paid gross margin | Total AI line, net/yr |
+|---|---|---|
+| 1 - Frontier, $0.350/query | 39.4% | **-$876k** |
+| 2 - Mid-tier, $0.035/query | 73.6% | **+$434k** |
+| 3 - Self-hosted, $0.006/query | 96.3% | **+$882k** |
+| Frontier digest, cheap follow-ups | 59.0% | -$549k |
+
+The paid tier turns healthy under precompute in every scenario. The *total* line does not, because paid gross margin of ~$378k funds roughly **18,000 free users while the base assumes 60,000**.
+
+That fourth row is the diagnostic. Making follow-ups cheap while still generating each digest on a frontier model leaves the line at -$549k, so **the dominant cost is digest generation for the free tier, not answering questions.**
+
+### Which makes free-tier cadence a lever, not a detail
+
+| Free-tier digest cadence | Cost/user/mo | Free cost/yr | Total AI line |
+|---|---|---|---|
+| Weekly | $1.74 | $1,254k | -$876k |
+| Fortnightly | $0.98 | $708k | -$330k |
+| **Monthly** | **$0.57** | **$414k** | **-$36k** |
+| Quarterly | $0.34 | $246k | +$132k |
+
+**A monthly free digest reaches break-even on frontier inference alone**, before any model-cost work. Combine it with Scenario 2 or 3 and the line is comfortably positive.
+
+So §9 should be read as two moves that are jointly necessary, not one headline and one footnote: **precompute the digest, and control what the free tier costs** - either by cadence, by routing to a cheaper model, or both. Either lever alone leaves money on the table; neither alone reaches the conclusion.
+
+This is also the honest answer to "your recommendation gives away the product for free." It does not. It gives away a *monthly* digest, which is cheap enough to fund from paid margin, and reserves the weekly cadence and the fast follow-ups for the tier that pays.
+
 ## 9. Recommendation
 
 1. **Precompute a weekly per-user digest and stop synthesising on demand.** This is the highest-ROI change available and everything else follows from it: fixed cost per user, an ~8× cheaper marginal question, metering becomes unnecessary, digest coverage becomes a design decision that closes the false negatives, and the compiled artifact becomes something the customer cannot reproduce by pasting a screenshot. Ship it at the cadence of the weekly snapshot that already exists, and store it as user data. See §8.
-2. **Then the paid tier is worth keeping, and the free tier should stop being metered.** With cost fixed per user, $3.99 clears ~55% gross margin (est.) instead of running negative, so the earlier "stop selling it" conclusion is withdrawn. Give the free tier a lighter digest on a slower cadence: it protects wear compliance, which is the binding constraint on the whole product, at bounded cost. Route routine follow-ups to a small self-hosted model (Scenario C) and reserve the multi-agent path for genuine Deep Research.
+2. **Then the paid tier is worth keeping, and the free tier should stop being metered - but its cadence has to be chosen deliberately.** With cost fixed per user, $3.99 clears a healthy paid gross margin instead of running negative, so the earlier "stop selling it" conclusion is withdrawn. **This is a second lever, not a footnote:** §8d shows that a *weekly* free digest at frontier inference leaves the total line at -$876k, while a *monthly* one reaches break-even before any model-cost work. Give the free tier a monthly digest, reserve weekly cadence and fast follow-ups for the paying tier, and route routine follow-ups to a small self-hosted model (Scenario C). Precompute and free-tier cost control are jointly necessary; either alone falls short.
 3. **Charge for what a general LLM cannot substitute** - CGM, Blood Vision, real-time AFib intervention. The ladder exists; Jade is on the wrong rung. Chat over summaries is fully substitutable by an assistant the customer already pays ~$20/month for.
 4. **Fix the false negatives before adding capability.** Jade denies HRV data the ring recorded 336,840 times (non-zero) and cannot see ~12 months of sleep. That is an ingestion defect suppressing the perceived value of the whole ecosystem - and it is cheaper to fix than any model upgrade.
 
