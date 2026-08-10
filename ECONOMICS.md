@@ -147,6 +147,49 @@ The false negatives in §Findings are not model failures - Jade answers from pre
 
 The marginal-value test in §6 turns on substitutability: a customer can paste a screenshot into an assistant they already own. **A screenshot is one screen. A compiled digest across 18 months is not pasteable.** Precompute is therefore not only the cheaper architecture, it is the only version of this product that has an informational edge over a general LLM at all.
 
+## 8b. Is "unlimited" viable? A tail question, answered by simulation
+
+The margin tables above use a single average user. Flat-rate pricing is not decided by the average; it is decided by the tail. `07_usage_sim.py` simulates a full population to answer the question directly.
+
+**This is a simulation, not a forecast.** No Jade query logs are public, so there is nothing to fit and any "predictive model" of Jade's credit usage would be fit to invented data. What is assumed is stated in the script and tested across three distribution families (lognormal, Pareto, gamma-Poisson) so the conclusion does not rest on one prior.
+
+**Adverse selection is the mechanism, and it is large.** Conversion is modelled as rising with usage, because heavy users are the ones who hit a paywall. Result: median usage across the base is ~8 questions/month, but median usage *among subscribers* is ~33. Subscribers are a right-shifted sample, roughly 4x the typical user.
+
+### The break-even is the whole argument
+
+| Architecture | Break-even at $3.99 | Subscribers below it |
+|---|---|---|
+| On-demand ($0.35/query) | **11.4 questions/month** | 20-45% |
+| Precompute ($1.52 fixed + $0.015/query) | **164.9 questions/month** | 89-100% |
+
+A **14x wider viable envelope.** Under on-demand, **55-80% of subscribers are gross-margin negative** in every distribution family tested. Under precompute that falls to **0-11%**.
+
+### No credit cap rescues the on-demand architecture
+
+The obvious counter is "cap the credits." The simulation prices that trade-off:
+
+| Monthly cap | Users unaffected | Questions refused | Margin |
+|---|---|---|---|
+| 240 | 93.9% | 16.0% | -429.7% |
+| 120 | 84.1% | 32.4% | -325.9% |
+| 60 | 67.6% | 51.3% | -206.8% |
+| 30 | 46.6% | 68.7% | -97.4% |
+| 15 | 26.8% | **81.7%** | **-15.3%** |
+
+**Even a 15-question cap - which refuses 82% of demand and degrades the experience for three-quarters of paying subscribers - still does not reach breakeven at frontier inference costs.** Metering cannot save this architecture; it can only decide how much engagement to destroy while failing. And the engagement it destroys is the wear-compliance input the product depends on.
+
+That is the strongest available argument for §8: precompute does not merely improve the margin, it is the only option that removes the trade-off between margin and engagement.
+
+## 8c. Gating on the coverage floor costs almost nothing
+
+Recommendation §9.4 depends on identifying users whose record is too thin to support advice. `08_wear_forecast.py` tests whether that is practical, on the real 562-day record with a strict temporal split.
+
+Wear is highly predictable: **~87% accuracy** on a held-out window. But the fitted logistic model **does not beat persistence** - "tomorrow = today" scores the same accuracy and a marginally better AUC (0.843 vs 0.839). Every feature except *worn today* and *gap length* contributes almost nothing.
+
+**The negative result is the useful one.** The signal is real and entirely first-order, so gating advice on coverage needs a counter and a threshold, not a model. It is a cheap change, which removes the last excuse for not making it.
+
+One caution worth carrying: the test window is only 29.9% worn against a training period that was mostly worn - wear collapsed through 2026. A model tuned on the earlier regime would have been confidently wrong about the later one, which is the same failure mode as everything else documented here.
+
 ## 9. Recommendation
 
 1. **Precompute a weekly per-user digest and stop synthesising on demand.** This is the highest-ROI change available and everything else follows from it: fixed cost per user, an ~8× cheaper marginal question, metering becomes unnecessary, digest coverage becomes a design decision that closes the false negatives, and the compiled artifact becomes something the customer cannot reproduce by pasting a screenshot. Ship it at the cadence of the weekly snapshot that already exists, and store it as user data. See §8.

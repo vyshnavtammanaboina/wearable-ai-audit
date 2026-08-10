@@ -43,6 +43,12 @@ Branch 3 is the one that reframes the study. Before grading Jade's advice, I ask
 
 Where the data *does* have power - 2.4M intraday readings across 162 well-covered days - a clean signal appears: a real circadian rhythm in resting heart rate, amplitude ≈11 bpm. And it **refutes the feature these apps sell**: the afternoon dip is not there.
 
+### Is "unlimited" viable? (stages 7 and 8)
+
+Flat-rate pricing is decided by the tail, not the average. Simulating a full population with usage-driven conversion: break-even is **11.4 questions/month** on-demand versus **164.9** under precompute, a 14x wider envelope, and **55-80% of subscribers are gross-margin negative** on-demand across every distribution family tested. **No credit cap fixes it** - even a 15-question cap, refusing 82% of demand, still misses breakeven.
+
+Two honesty notes, because they matter more than the numbers. Stage 7 is a **simulation under declared priors, not a forecast**: no Jade query logs exist publicly, so a "predictive model" of credit usage would be fit to invented data and presented as prediction - the exact failure this study documents in Jade. Stage 8 *is* fit to real data, and its result is negative: wear is ~87% predictable but a logistic model **does not beat "tomorrow = today."** Gating advice on coverage needs a counter, not machine learning. Both results are reported as found.
+
 ---
 
 ## The pipeline
@@ -57,6 +63,8 @@ Six stages, plain Python and SQLite, no framework.
 | 4 | `04_tests.py` | 17 data-quality assertions. |
 | 5 | `05_models.py` | Recovery-driver regressions, HAC standard errors, Holm correction. |
 | 6 | `06_charts.py` | Figures in `outputs/`. |
+| 7 | `07_usage_sim.py` | Monte Carlo over per-user query volume: is flat-rate "unlimited" viable? **Simulation under stated priors, not a fitted model** - no Jade usage data is public. Tested across three distribution families. |
+| 8 | `08_wear_forecast.py` | Wear-compliance forecasting on the real 562-day record, strict temporal split, against honest baselines. |
 
 ### Tests
 
